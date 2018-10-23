@@ -2,6 +2,38 @@
 
 
 [[projects]]
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  pruneopts = "UT"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
+
+[[projects]]
+  digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:9f50f0543353c50296cc01fd8b623198799bc93d34ef3a32b410aa8386fc6e60"
+  name = "github.com/franela/goreq"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "bcd34c9993f899273c74baaa95e15386cd97b6e7"
+
+[[projects]]
+  digest = "1:2b59aca2665ff804f6606c8829eaee133ddd3aefbc841014660d961b0034f888"
+  name = "github.com/gin-contrib/cors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "cf4846e6a636a76237a28d9286f163c132e841bc"
+  version = "v1.2"
+
+[[projects]]
   branch = "master"
   digest = "1:36fe9527deed01d2a317617e59304eb2c4ce9f8a24115bcc5c2e37b3aee5bae4"
   name = "github.com/gin-contrib/sse"
@@ -66,6 +98,26 @@
   version = "v1.1.5"
 
 [[projects]]
+  branch = "master"
+  digest = "1:7ea84716ab53c13c7a574fb955ee037f31bfd6e519ad1b8299eda40aa05edf33"
+  name = "github.com/lestrrat/go-jwx"
+  packages = [
+    "internal/base64",
+    "jwa",
+    "jwk",
+  ]
+  pruneopts = "UT"
+  revision = "b7d4802280aef47b8786da314e8675d41d980b04"
+
+[[projects]]
+  branch = "master"
+  digest = "1:27f17849bfe2b9119be21d515c086880a001f9a7e4df1e95d8f8a63ba447001b"
+  name = "github.com/lestrrat/go-pdebug"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "569c97477ae8837e053e5a50bc739e15172b8ebe"
+
+[[projects]]
   digest = "1:b18ffc558326ebaed3b4a175617f1e12ed4e3f53d6ebfe5ba372a3de16d22278"
   name = "github.com/lib/pq"
   packages = [
@@ -100,6 +152,14 @@
   pruneopts = "UT"
   revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
   version = "1.0.1"
+
+[[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
 
 [[projects]]
   digest = "1:03aa6e485e528acb119fb32901cf99582c380225fc7d5a02758e08b180cb56c3"
@@ -137,10 +197,14 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/dgrijalva/jwt-go",
+    "github.com/franela/goreq",
+    "github.com/gin-contrib/cors",
     "github.com/gin-gonic/gin",
     "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/postgres",
     "github.com/joho/godotenv",
+    "github.com/lestrrat/go-jwx/jwk",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

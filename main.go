@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"runtime"
+
+	"github.com/gin-gonic/gin"
 
 	"github.com/bottleneckco/statuses-backend/db"
 	"github.com/bottleneckco/statuses-backend/model"
@@ -12,6 +15,10 @@ import (
 
 func main() {
 	godotenv.Overload(fmt.Sprintf("%s.env", runtime.GOOS), ".env")
+
+	if gin.Mode() == gin.DebugMode {
+		log.SetFlags(log.LstdFlags | log.Lshortfile)
+	}
 
 	// Migrate
 	db.DB.AutoMigrate(&model.User{}, &model.Booking{}, &model.Group{}, &model.Room{}, &model.Status{})
