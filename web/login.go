@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/bottleneckco/statuses-backend/db"
 	"github.com/bottleneckco/statuses-backend/model"
@@ -61,8 +62,8 @@ func getKey(token *jwt.Token) (interface{}, error) {
 	return nil, errors.New("unable to find key")
 }
 
-// Login handle login requests
-func Login(c *gin.Context) {
+// handle login requests
+func login(c *gin.Context) {
 	var payload payloadLogin
 	err := c.BindJSON(&payload)
 	if err != nil {
@@ -94,5 +95,53 @@ func Login(c *gin.Context) {
 		Picture: payload.Profile.ImageURL,
 		Token:   payload.Token.IDToken,
 	}
+
+	jwtPrivateKey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(os.Getenv("JWT_PRIVATE_KEY")))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
+		log.Println(err)
+		return
+	}
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
+		"username": payload.Profile.Email,
+		"exp":      time.Now().Add(time.Minute * 30).Unix(),
+	})
+	accessTokenString, err := accessToken.SignedString(jwtPrivateKey)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
+		log.Println(err)
+		return
+	}
+
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
+		"username": payload.Profile.Email,
+		"exp":      time.Now().Add(time.Hour * 72).Unix(),
+	})
+
+	refreshTokenString, err := refreshToken.SignedString(jwtPrivateKey)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
+		log.Println(err)
+		return
+	}
 	db.DB.FirstOrCreate(&user, model.User{Email: payload.Profile.Email})
+	c.JSON(http.StatusOK, gin.H{"access_token": accessTokenString, "refresh_token": refreshTokenString})
+}
+
+// jwks render JWKS to API consumers
+func jwks(c *gin.Context) {
+	jwtPrivateKey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(os.Getenv("JWT_PRIVATE_KEY")))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
+		log.Println(err)
+		return
+	}
+	jwk, err := jwk.New(jwtPrivateKey)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
+		log.Println(err)
+		return
+	}
+
+	c.JSON(http.StatusOK, jwk)
 }

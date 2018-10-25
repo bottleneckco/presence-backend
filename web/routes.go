@@ -24,8 +24,10 @@ func StartServer() {
 		api.GET("/", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"status": true})
 		})
-		api.POST("/login", Login)
+		api.POST("/login", login)
 	}
+
+	r.GET("/.well-known/jwks.json", jwks)
 
 	port := os.Getenv("PORT")
 	if port == "" {
