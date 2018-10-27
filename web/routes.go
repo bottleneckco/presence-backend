@@ -24,7 +24,7 @@ func StartServer() {
 		api.GET("/", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"status": true})
 		})
-		api.POST("/login", login)
+		api.POST("/oauth/token", oauth)
 	}
 
 	r.GET("/.well-known/jwks.json", jwks)
