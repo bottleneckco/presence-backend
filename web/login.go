@@ -133,7 +133,6 @@ func generateTokenPair(c *gin.Context, username string) {
 		"username": username,
 		"exp":      time.Now().Add(time.Minute * 30).Unix(),
 	})
-	accessToken.Header["kid"] = jwtPrivateKey.
 	accessTokenString, err := accessToken.SignedString(jwtPrivateKey)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
@@ -174,16 +173,6 @@ func generateTokenPair(c *gin.Context, username string) {
 	})
 }
 
-func getKeyId() string {
-	jwk, err := jwk.New(&jwtPrivateKey.PublicKey)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
-		log.Println(err)
-		return
-	}
-	return string(jwk.Thumbprint())
-}
-
 // jwks render JWKS to API consumers
 func jwks(c *gin.Context) {
 	jwk, err := jwk.New(&jwtPrivateKey.PublicKey)
@@ -195,7 +184,6 @@ func jwks(c *gin.Context) {
 	// Compute kid
 	jwk.Set("alg", "RS256")
 	jwk.Set("kid", "placeholder")
-	jwk.Set("x5c", []string{"placeholder"})
 	c.JSON(http.StatusOK, gin.H{"keys": []interface{}{
 		jwk,
 	}})
