@@ -111,7 +111,7 @@ func oauth(c *gin.Context) {
 	case "refresh_token":
 		claims := jwt.MapClaims{}
 		token, err := jwt.ParseWithClaims(payload.RefreshToken, claims, func(token *jwt.Token) (interface{}, error) {
-			return jwtPrivateKey, nil
+			return &jwtPrivateKey.PublicKey, nil
 		})
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"status": false, "message": "bad payload"})
