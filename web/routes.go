@@ -19,12 +19,15 @@ func StartServer() {
 		config.AllowOrigins = append(config.AllowOrigins, frontEndURL)
 	}
 	r.Use(cors.New(config))
+	r.POST("/oauth/token", oauth)
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": true})
+	})
+
 	api := r.Group("/api")
 	{
-		api.GET("/", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"status": true})
-		})
-		api.POST("/oauth/token", oauth)
+		api.Use(authMiddleware())
+		api.GET("/users/me", me)
 	}
 
 	r.GET("/.well-known/jwks.json", jwks)

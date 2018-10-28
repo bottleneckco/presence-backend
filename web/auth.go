@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/bottleneckco/statuses-backend/db"
@@ -171,6 +172,35 @@ func generateTokenPair(c *gin.Context, username string) {
 		RefreshToken: refreshTokenString,
 		ExpiresIn:    30,
 	})
+}
+
+func authMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tokenString := c.GetHeader("Authorization")
+		tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
+		claims := jwt.MapClaims{}
+		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+			return &jwtPrivateKey.PublicKey, nil
+		})
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"status": false, "message": "bad payload"})
+			log.Println(err)
+			return
+		}
+		if !token.Valid {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": false, "message": "unauthorised"})
+			return
+		}
+		user := model.User{}
+		err = db.DB.Where("email = ?", claims["username"].(string)).First(&user).Error
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "error occurred"})
+			log.Println(err)
+			return
+		}
+		c.Set("user", user)
+		c.Next()
+	}
 }
 
 // jwks render JWKS to API consumers
