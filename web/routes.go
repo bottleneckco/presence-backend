@@ -14,6 +14,7 @@ func StartServer() {
 	r := gin.Default()
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:1234"}
+	config.AddAllowHeaders("Authorization")
 	frontEndURL, ok := os.LookupEnv("FRONTEND_URL")
 	if ok {
 		config.AllowOrigins = append(config.AllowOrigins, frontEndURL)
@@ -28,6 +29,8 @@ func StartServer() {
 	{
 		api.Use(authMiddleware())
 		api.GET("/users/me", me)
+		api.GET("/status/latest", statusLatest)
+		api.POST("/status", statusCreate)
 	}
 
 	r.GET("/.well-known/jwks.json", jwks)
