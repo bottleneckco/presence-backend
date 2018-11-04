@@ -13,7 +13,7 @@ import (
 func statusLatest(c *gin.Context) {
 	user := c.MustGet("user").(model.User)
 	var status model.Status
-	err := db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").Or("end_time >= NOW()").Order("start_time DESC").First(&status).Error
+	err := db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").Or("end_time >= NOW()").Or("NOW() BETWEEN start_time AND end_time").Order("start_time DESC").First(&status).Error
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
 		return
@@ -34,6 +34,7 @@ func statusCreate(c *gin.Context) {
 	latestOpenStatusErr := db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").First(&latestOpenStatus).Error
 	var dbModel = model.Status{
 		Title:     payload.Title,
+		Category:  payload.Category,
 		Notes:     payload.Notes,
 		StartTime: payload.StartTime,
 		EndTime:   payload.EndTime,
