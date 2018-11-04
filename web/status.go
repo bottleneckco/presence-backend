@@ -31,15 +31,7 @@ func statusCreate(c *gin.Context) {
 	user := c.MustGet("user").(model.User)
 	// Mark other statuses as ended
 	var latestOpenStatus model.Status
-	err = db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").First(&latestOpenStatus).Error
-	if err == nil {
-		err = db.DB.Model(&latestOpenStatus).Update("end_time", time.Now()).Error
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
-			log.Println(err)
-			return
-		}
-	}
+	latestOpenStatusErr := db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").First(&latestOpenStatus).Error
 	var dbModel = model.Status{
 		Title:     payload.Title,
 		Notes:     payload.Notes,
@@ -51,6 +43,14 @@ func statusCreate(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
 		return
+	}
+	if latestOpenStatusErr == nil {
+		err = db.DB.Model(&latestOpenStatus).Update("end_time", time.Now()).Error
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
+			log.Println(err)
+			return
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{"status": true, "data": dbModel})
 }
