@@ -1,7 +1,9 @@
 package web
 
 import (
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/bottleneckco/statuses-backend/db"
 	"github.com/bottleneckco/statuses-backend/model"
@@ -27,6 +29,17 @@ func statusCreate(c *gin.Context) {
 		return
 	}
 	user := c.MustGet("user").(model.User)
+	// Mark other statuses as ended
+	var latestOpenStatus model.Status
+	err = db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").First(&latestOpenStatus).Error
+	if err == nil {
+		err = db.DB.Model(&latestOpenStatus).Update("end_time", time.Now()).Error
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
+			log.Println(err)
+			return
+		}
+	}
 	var dbModel = model.Status{
 		Title:     payload.Title,
 		Notes:     payload.Notes,

@@ -9,9 +9,9 @@ import (
 // Status struct
 type Status struct {
 	gorm.Model
-	Title     string     `json:"title" gorm:"column:title"`
+	Title     string     `json:"title" gorm:"type:text CHECK(title <> '');column:title;not null"`
 	Notes     string     `json:"notes" gorm:"column:notes"`
-	StartTime *time.Time `json:"start_time" gorm:"column:start_time"`
+	StartTime *time.Time `json:"start_time" gorm:"column:start_time;not null"`
 	EndTime   *time.Time `json:"end_time" gorm:"column:end_time"`
 	UserID    int        `json:"-" gorm:"column:user_id"`
 	User      User       `json:"-"`
