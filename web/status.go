@@ -45,7 +45,7 @@ func statusCreate(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
 		return
 	}
-	if latestOpenStatusErr == nil {
+	if latestOpenStatusErr == nil && payload.EndTime == nil {
 		err = db.DB.Model(&latestOpenStatus).Update("end_time", time.Now()).Error
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
