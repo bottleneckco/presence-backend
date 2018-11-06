@@ -7,8 +7,10 @@ import (
 // Group represents a group
 type Group struct {
 	gorm.Model
-	Name string `json:"name" gorm:"column:name;not null"`
-	Code string `json:"code" gorm:"column:code;not null"`
-	User []User `json:"-" gorm:"many2many:user_groups"`
-	Room []Room `json:"-"`
+	Name     string `json:"name" gorm:"column:name;not null"`
+	Code     string `json:"code" gorm:"column:code;not null"`
+	User     []User `json:"-" gorm:"many2many:user_groups"`
+	Room     []Room `json:"-"`
+	Author   User   `json:"author"`
+	AuthorID int    `json:"-" gorm:"column:author_id;not null"`
 }

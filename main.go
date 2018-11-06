@@ -24,6 +24,7 @@ func main() {
 	db.DB.AutoMigrate(&model.User{}, &model.Booking{}, &model.Group{}, &model.Room{}, &model.Status{})
 	db.DB.Model(&model.Status{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
 	db.DB.Model(&model.Booking{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	db.DB.Model(&model.Group{}).AddForeignKey("author_id", "users(id)", "RESTRICT", "RESTRICT")
 	db.DB.Table("user_groups").AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
 	db.DB.Table("user_groups").AddForeignKey("group_id", "groups(id)", "RESTRICT", "RESTRICT")
 
