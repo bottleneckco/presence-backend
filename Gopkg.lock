@@ -154,12 +154,9 @@
   version = "v0.8.0"
 
 [[projects]]
-  digest = "1:3ee4075ed5d9fbe62bb8e70a68152af8d520a9e391b0195912eb3bf2cf6a8668"
+  digest = "1:b749dfc1b2734006da71966102ca708c5575081590f4bbfa7bf6ba1979f04ee9"
   name = "github.com/speps/go-hashids"
-  packages = [
-    ".",
-    "cmd/hashid",
-  ]
+  packages = ["."]
   pruneopts = "UT"
   revision = "ad304c6ede07ca1f915c30a5510c45860aa165a7"
   version = "v2.0.0"
@@ -207,7 +204,7 @@
     "github.com/jinzhu/gorm/dialects/postgres",
     "github.com/joho/godotenv",
     "github.com/lestrrat/go-jwx/jwk",
-    "github.com/speps/go-hashids/cmd/hashid",
+    "github.com/speps/go-hashids",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
