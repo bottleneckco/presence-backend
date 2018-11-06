@@ -15,5 +15,5 @@ type Status struct {
 	StartTime *time.Time `json:"start_time" gorm:"column:start_time;not null"`
 	EndTime   *time.Time `json:"end_time" gorm:"column:end_time"`
 	UserID    int        `json:"-" gorm:"column:user_id"`
-	User      User       `json:"-"`
+	User      User       `json:"user"`
 }

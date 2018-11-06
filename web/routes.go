@@ -34,6 +34,7 @@ func StartServer() {
 		api.GET("/group", groupList)
 		api.POST("/group", groupCreate)
 		api.POST("/group/join", groupJoin)
+		api.GET("/group/statuses", groupListStatuses)
 	}
 
 	r.GET("/.well-known/jwks.json", jwks)

@@ -24,6 +24,42 @@ func groupList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": true, "data": groups})
 }
 
+type modelGroupListStatuses struct {
+	Name     string         `json:"group_name"`
+	Statuses []model.Status `json:"statuses"`
+}
+
+func groupListStatuses(c *gin.Context) {
+	user := c.MustGet("user").(model.User)
+	var groups []model.Group
+	err := db.DB.Preload("Users").Preload("Author").Model(&user).Association("Groups").Find(&groups).Error
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
+		log.Println(err)
+		return
+	}
+	response := make([]modelGroupListStatuses, len(groups))
+	for i, group := range groups {
+		resp := modelGroupListStatuses{
+			Name:     group.Name,
+			Statuses: make([]model.Status, len(group.Users)),
+		}
+		for ii, user := range group.Users {
+			status := model.Status{
+				User: user,
+			}
+			err := db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").Or("end_time >= NOW()").Or("NOW() BETWEEN start_time AND end_time").Order("start_time DESC").First(&status).Error
+			if err != nil {
+				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
+				return
+			}
+			resp.Statuses[ii] = status
+		}
+		response[i] = resp
+	}
+	c.JSON(http.StatusOK, gin.H{"status": true, "data": response})
+}
+
 func groupCreate(c *gin.Context) {
 	var payload model.Group
 	err := c.BindJSON(&payload)
