@@ -56,3 +56,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/lestrrat/go-jwx"
+
+[[constraint]]
+  name = "github.com/speps/go-hashids"
+  version = "2.0.0"

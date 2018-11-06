@@ -18,14 +18,6 @@
   version = "v3.2.0"
 
 [[projects]]
-  branch = "master"
-  digest = "1:9f50f0543353c50296cc01fd8b623198799bc93d34ef3a32b410aa8386fc6e60"
-  name = "github.com/franela/goreq"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "bcd34c9993f899273c74baaa95e15386cd97b6e7"
-
-[[projects]]
   digest = "1:2b59aca2665ff804f6606c8829eaee133ddd3aefbc841014660d961b0034f888"
   name = "github.com/gin-contrib/cors"
   packages = ["."]
@@ -162,6 +154,17 @@
   version = "v0.8.0"
 
 [[projects]]
+  digest = "1:3ee4075ed5d9fbe62bb8e70a68152af8d520a9e391b0195912eb3bf2cf6a8668"
+  name = "github.com/speps/go-hashids"
+  packages = [
+    ".",
+    "cmd/hashid",
+  ]
+  pruneopts = "UT"
+  revision = "ad304c6ede07ca1f915c30a5510c45860aa165a7"
+  version = "v2.0.0"
+
+[[projects]]
   digest = "1:03aa6e485e528acb119fb32901cf99582c380225fc7d5a02758e08b180cb56c3"
   name = "github.com/ugorji/go"
   packages = ["codec"]
@@ -198,13 +201,13 @@
   analyzer-version = 1
   input-imports = [
     "github.com/dgrijalva/jwt-go",
-    "github.com/franela/goreq",
     "github.com/gin-contrib/cors",
     "github.com/gin-gonic/gin",
     "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/postgres",
     "github.com/joho/godotenv",
     "github.com/lestrrat/go-jwx/jwk",
+    "github.com/speps/go-hashids/cmd/hashid",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

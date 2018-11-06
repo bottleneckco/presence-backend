@@ -13,5 +13,5 @@ type User struct {
 	Token   string    `json:"-" gorm:"token"`
 	Booking []Booking `json:"-"`
 	Status  []Status  `json:"-"`
-	Group   []Group   `json:"-" gorm:"many2many:user_groups"`
+	Groups  []Group   `json:"-" gorm:"many2many:user_groups"`
 }
