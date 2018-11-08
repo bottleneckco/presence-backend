@@ -25,7 +25,7 @@
 #   unused-packages = true
 
 [metadata.heroku]
-  root-package = "github.com/bottleneckco/statuses-backend"
+  root-package = "github.com/bottleneckco/presence-backend"
   install = [ "./..." ]
 
 [prune]

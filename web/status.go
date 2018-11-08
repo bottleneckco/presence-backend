@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bottleneckco/statuses-backend/db"
-	"github.com/bottleneckco/statuses-backend/model"
+	"github.com/bottleneckco/presence-backend/db"
+	"github.com/bottleneckco/presence-backend/model"
 	"github.com/gin-gonic/gin"
 )
 

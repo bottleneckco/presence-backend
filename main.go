@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/bottleneckco/statuses-backend/db"
-	"github.com/bottleneckco/statuses-backend/model"
-	"github.com/bottleneckco/statuses-backend/web"
+	"github.com/bottleneckco/presence-backend/db"
+	"github.com/bottleneckco/presence-backend/model"
+	"github.com/bottleneckco/presence-backend/web"
 	"github.com/joho/godotenv"
 )
 

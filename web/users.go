@@ -3,7 +3,7 @@ package web
 import (
 	"net/http"
 
-	"github.com/bottleneckco/statuses-backend/model"
+	"github.com/bottleneckco/presence-backend/model"
 	"github.com/gin-gonic/gin"
 )
 

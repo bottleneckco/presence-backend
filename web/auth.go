@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bottleneckco/statuses-backend/db"
-	"github.com/bottleneckco/statuses-backend/model"
+	"github.com/bottleneckco/presence-backend/db"
+	"github.com/bottleneckco/presence-backend/model"
 	"github.com/lestrrat/go-jwx/jwk"
 
 	jwt "github.com/dgrijalva/jwt-go"
