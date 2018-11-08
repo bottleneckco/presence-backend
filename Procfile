@@ -1,1 +1,1 @@
-web: bin/statuses-backend
+web: bin/presence-backend
