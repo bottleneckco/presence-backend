@@ -41,19 +41,18 @@ func groupListStatuses(c *gin.Context) {
 	response := make([]modelGroupListStatuses, len(groups))
 	for i, group := range groups {
 		resp := modelGroupListStatuses{
-			Name:     group.Name,
-			Statuses: make([]model.Status, len(group.Users)),
+			Name: group.Name,
 		}
-		for ii, user := range group.Users {
+		for _, user := range group.Users {
 			status := model.Status{
 				User: user,
 			}
 			err := db.DB.Where("user_id = ?", user.ID).Where("end_time IS NULL").Or("end_time >= NOW()").Or("NOW() BETWEEN start_time AND end_time").Order("start_time DESC").First(&status).Error
 			if err != nil {
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"status": false, "message": "internal error"})
-				return
+				log.Println(err)
+			} else {
+				resp.Statuses = append(resp.Statuses, status)
 			}
-			resp.Statuses[ii] = status
 		}
 		response[i] = resp
 	}
